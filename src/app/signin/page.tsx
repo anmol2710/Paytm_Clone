@@ -20,6 +20,7 @@ export default function Signin() {
 
         const response = axios.post("/api/user/signin", JSON.stringify({ email, password }))
         if ((await response).data.status) {
+            localStorage.setItem("token", (await response).data.message)
             router.push("/")
         }
         else {
