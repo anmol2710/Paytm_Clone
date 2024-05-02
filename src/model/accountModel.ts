@@ -8,7 +8,6 @@ const userScema = new mongoose.Schema({
     user:{
         type:mongoose.Schema.Types.ObjectId,
         required:true,
-        unique:true
     }
 })
 

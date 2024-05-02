@@ -1,15 +1,32 @@
 "use client"
 import axios from 'axios';
-import { useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { useSearchParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Send() {
-    const searchParams = useSearchParams()
-    const id = searchParams.get('id')
-    const name = searchParams.get('name')
+    const [loading, setLoading] = useState(true);
+    const [id, setId] = useState('');
+    const [name, setName] = useState('');
     const [amount, setAmount] = useState(0);
+
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const fetchSearchParams = async () => {
+            const id = searchParams.get('id');
+            const name = searchParams.get('name');
+
+            if (id && name) {
+                setId(id);
+                setName(name);
+                setLoading(false);
+            }
+        };
+
+        fetchSearchParams();
+    }, [searchParams]);
 
     async function handleTransfer() {
         const response = await axios.post("/api/account/transfer", JSON.stringify({ amount, to: id, from: localStorage.getItem("token") }))
@@ -19,6 +36,10 @@ export default function Send() {
         else {
             toast.error(response.data.message)
         }
+    }
+
+    if (loading) {
+        return <div>Loading...</div>;
     }
 
     return (
@@ -64,5 +85,5 @@ export default function Send() {
             </div>
             <ToastContainer />
         </div>
-    )
+    );
 }

@@ -13,7 +13,7 @@ export default async function dbConnect():Promise<void> {
     }
     else{
         try {
-            const db = await mongoose.connect("mongodb://127.0.0.1:27017/paytm")
+            const db = await mongoose.connect(process.env.MONGO_URI || "")
             connection.isConnected = db.connections[0].readyState;
             
             console.log("DB Connected")
