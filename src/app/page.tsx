@@ -34,7 +34,7 @@ export default function Home() {
   }, [router])
 
   const fetchBalance = async () => {
-    const response = await axios.post("http://localhost:3000/api/account/balance", JSON.stringify({ token: localStorage.getItem("token") }))
+    const response = await axios.post("/api/account/balance", JSON.stringify({ token: localStorage.getItem("token") }))
     if (response.data.status) {
       setBalance(response.data.message)
     }
