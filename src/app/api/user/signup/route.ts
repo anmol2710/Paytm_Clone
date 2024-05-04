@@ -35,7 +35,8 @@ export async function POST(req:NextRequest){
     console.log(newuser)
     await Account.create({
         user:newuser._id,
-        balance:10000
+        balance:10000,
+        name
     })
     if(newuser){
         return Response.json({"message":newuser._id , "status":true})

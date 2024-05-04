@@ -3,7 +3,7 @@ import dbConnect from "@/lib/dbConnect";
 
 dbConnect();
 
-export async function POST(req:Request){
+export async function POST(req:Request) {
     const body = await req.json();
     const {token} = body;
     const account = await Account.findOne({
@@ -15,10 +15,9 @@ export async function POST(req:Request){
             return Response.json({"message":"Inavlid account" , status:false})
         }
         else{
-            return Response.json({"message":account.balance , status:true})
+            return Response.json({"message":account.transactions , status:true})
         }
     } catch (error) {
         return Response.json({"message":"Something went wrong" , status:false})
     }
-    
 }

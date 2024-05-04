@@ -29,7 +29,11 @@ export default function Send() {
     }, [searchParams]);
 
     async function handleTransfer() {
-        const response = await axios.post("/api/account/transfer", JSON.stringify({ amount, to: id, from: localStorage.getItem("token") }))
+        if (amount <= 0) {
+            toast.error("Amount must be greater than 0")
+            return
+        }
+        const response = await axios.post("/api/account/transfer", JSON.stringify({ amount, name, to: id, from: localStorage.getItem("token") }))
         if (response.data.status) {
             toast.success(response.data.message)
         }

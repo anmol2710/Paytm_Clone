@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from "next/navigation";
 import axios from 'axios';
+import Navbar from '@/components/Navbar';
 
 interface UserType {
   name: string;
@@ -16,13 +17,7 @@ export default function Home() {
   const router = useRouter();
   const [balance, setBalance] = useState(0);
   const [Filter, setFilter] = useState("");
-  const [users, setUsers] = useState<UserType[]>([{
-    name: '',
-    password: '',
-    username: '',
-    __v: 0,
-    _id: ''
-  }]);
+  const [users, setUsers] = useState<UserType[]>();
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
@@ -50,25 +45,9 @@ export default function Home() {
   }
 
   return (
-    <>
-      <nav className="shadow h-14 flex justify-between">
-        <div className="flex flex-col justify-center h-full ml-4">
-          PAYTM App
-        </div>
-        <div className="flex">
-          <div className="flex flex-col justify-center h-full mr-4">
-            Hello
-          </div>
-          <div className="rounded-full h-12 w-12 bg-slate-200 flex justify-center mt-1 mr-2">
-            <div className="flex flex-col justify-center h-full text-xl">
-              U
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      <div className=' m-8'>
-
+    <div className=' w-screen h-screen flex bg-[#00baf2]'>
+      <Navbar />
+      <div className=' w-full p-10'>
         <div className="flex">
           <div className="font-bold text-lg">
             Your balance
@@ -87,30 +66,28 @@ export default function Home() {
           }} type="text" placeholder="Search users..." className="w-full px-2 py-1 border rounded border-slate-200"></input>
         </div>
         <div>
-          {/* {users.map(user => <User user={user} />)} */}
           {users && users.map(user => (<div key={user._id}>
             <div className="flex justify-between">
               <div className="flex">
-                <div className="rounded-full h-12 w-12 bg-slate-200 flex justify-center mt-1 mr-2">
+                <div className="rounded-full h-12 w-12 bg-[#042e6f] text-white text-xl flex justify-center mt-1 mr-2">
                   <div className="flex flex-col justify-center h-full text-xl">
                     {user.name.charAt(0).toUpperCase()}
                   </div>
                 </div>
                 <div className="flex flex-col justify-center h-ful">
-                  <div>
+                  <div className=' text-lg'>
                     {user.name}
                   </div>
                 </div>
               </div>
 
               <div className="flex flex-col justify-center h-ful">
-                <button className='bg-black text-white rounded-lg px-10 py-2' onClick={() => { router.push("/send?id=" + user._id + "&name=" + user.name) }}>Send Money</button>
+                <button className='bg-[#042e6f] text-white rounded-lg px-10 py-2' onClick={() => { router.push("/send?id=" + user._id + "&name=" + user.name) }}>Send Money</button>
               </div>
             </div>
           </div>))}
         </div>
       </div >
-
-    </>
+    </div>
   );
 }
