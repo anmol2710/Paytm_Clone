@@ -20,20 +20,21 @@ export default function Home() {
   const [users, setUsers] = useState<UserType[]>();
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
+    const token = localStorage.getItem("token")
+    if (token === null) {
       router.push("/signin")
+      return
     }
-    else {
-      fetchBalance()
-    }
-  }, [router])
+    console.log("hello")
+    axios.post("/api/account/balance", JSON.stringify({ token: localStorage.getItem("token") }))
+      .then(response => {
+        if (response.data.status) {
+          setBalance(response.data.message)
+        }
+      })
 
-  const fetchBalance = async () => {
-    const response = await axios.post("/api/account/balance", JSON.stringify({ token: localStorage.getItem("token") }))
-    if (response.data.status) {
-      setBalance(response.data.message)
-    }
-  }
+  }, [])
+
 
   useEffect(() => {
     fetchUsers()
@@ -41,7 +42,7 @@ export default function Home() {
 
   const fetchUsers = async () => {
     const response = await axios.post("/api/user/bulk", JSON.stringify({ id: localStorage.getItem("token"), filter: Filter }))
-    await setUsers(response.data.users)
+    setUsers(response.data.users)
   }
 
   return (
