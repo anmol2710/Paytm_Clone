@@ -45,7 +45,7 @@ export default function Home() {
   }
 
   return (
-    <div className=' w-screen h-screen flex bg-[#00baf2]'>
+    <div className=' w-screen h-screen flex flex-col-reverse md:flex-row justify-between bg-[#00baf2]'>
       <Navbar />
       <div className=' w-full p-10'>
         <div className="flex">
@@ -82,7 +82,7 @@ export default function Home() {
               </div>
 
               <div className="flex flex-col justify-center h-ful">
-                <button className='bg-[#042e6f] text-white rounded-lg px-10 py-2' onClick={() => { router.push("/send?id=" + user._id + "&name=" + user.name) }}>Send Money</button>
+                <button className='bg-[#042e6f] text-white rounded-lg px-10 py-2' onClick={() => { router.push("/send?id=" + user._id + "&name=" + user.name) }}>Send</button>
               </div>
             </div>
           </div>))}

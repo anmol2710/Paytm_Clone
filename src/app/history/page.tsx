@@ -25,13 +25,13 @@ export default function Page() {
     }
 
     return (
-        <div className='w-screen h-screen flex bg-[#00baf2]'>
+        <div className='w-screen h-screen flex flex-col-reverse md:flex-row justify-between bg-[#00baf2]'>
             <Navbar />
-            <div className='w-full p-10 flex flex-col items-center'>
+            <div className='w-full pt-10 md:p-10 flex flex-col items-center overflow-auto'>
                 <h1 className='text-2xl font-semibold'>Transactions History</h1>
-                <div className=' overflow-y-scroll no-scrollbar mt-10 w-full flex flex-col items-center'>
+                <div className=' overflow-y-scroll no-scrollbar mt-5 md:mt-10 w-full flex flex-col items-center'>
                     {data && data.map(transaction => (
-                        <div key={transaction._id} className={` w-[400px] h-[100px] m-5 p-5 flex flex-col items-center justify-between ${transaction.amount > 0 ? "bg-green-500" : "bg-red-500"} rounded-lg shadow-red-600 shadow-md`}>
+                        <div key={transaction._id} className={` w-[300px] md:w-[400px] h-[100px] m-5 p-5 flex flex-col items-center justify-between ${transaction.amount > 0 ? "bg-green-500" : "bg-red-500"} rounded-lg shadow-red-600 shadow-md`}>
                             <div className=' flex items-center justify-between px-10 w-full'>
                                 <p className='text-[20px] font-semibold'>{transaction.name}</p>
                                 <p className='text-[20px] font-semibold'>{transaction.amount}</p>
