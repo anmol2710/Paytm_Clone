@@ -1,11 +1,16 @@
 "use client"
-import Navbar from '@/components/Navbar';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useSession } from 'next-auth/react';
+
+interface UserType {
+    name: string;
+    email: string;
+    id: string;
+}
 
 interface sessionType {
     data: {
@@ -20,15 +25,27 @@ interface sessionType {
 
 export default function Send() {
 
-    const session: sessionType = useSession()
+    const { data, status } = useSession();
     const [loading, setLoading] = useState(true);
     const [id, setId] = useState('');
     const [name, setName] = useState('');
     const [amount, setAmount] = useState(0);
+    const [session, setSession] = useState<sessionType | null>(null);
 
     const searchParams = useSearchParams();
 
     useEffect(() => {
+
+        if (data) {
+            const sessionData: sessionType = {
+                data: {
+                    user: data.user as UserType,
+                },
+                status: status,
+            };
+            setSession(sessionData);
+        }
+
         const fetchSearchParams = async () => {
             const id = searchParams.get('id');
             const name = searchParams.get('name');
@@ -48,7 +65,7 @@ export default function Send() {
             toast.error("Amount must be greater than 0")
             return
         }
-        if (session.data?.user && session.data?.user.id) {
+        if (session && session.data?.user && session.data?.user.id) {
             const response = await axios.post("/api/account/transfer", JSON.stringify({ amount, name, to: id, from: session.data.user.id }))
             if (response.data.status) {
                 toast.success(response.data.message)
