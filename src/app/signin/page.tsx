@@ -1,9 +1,9 @@
 "use client"
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { signIn } from "next-auth/react";
 
 export default function Signin() {
     const router = useRouter()
@@ -18,14 +18,13 @@ export default function Signin() {
             return
         }
 
-        const response = axios.post("/api/user/signin", JSON.stringify({ email, password }))
-        if ((await response).data.status) {
-            localStorage.setItem("token", (await response).data.message)
-            router.push("/")
-        }
-        else {
-            toast.error((await response).data.message)
-        }
+        const response = await signIn("credentials", {
+            email: email,
+            password: password,
+            redirect: false
+        })
+        console.log(response)
+        router.push("/")
     }
 
     return (

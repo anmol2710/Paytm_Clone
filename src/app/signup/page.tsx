@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { signIn } from "next-auth/react";
 
 export default function Signup() {
 
@@ -29,18 +30,14 @@ export default function Signup() {
             return
         }
 
-        const response = await axios.post("/api/user/signup", JSON.stringify({ name, email, password }), {
-            headers: {
-                'Content-Type': 'application/json'
-            }
+        const response = await signIn("credentials", {
+            name: name,
+            email: email,
+            password: password,
+            redirect: false
         })
-        if (response.data.status) {
-            localStorage.setItem("token", response.data.message)
-            router.push("/")
-        }
-        else {
-            toast.error(response.data.message)
-        }
+        console.log(response)
+        router.push("/")
     }
 
     return (

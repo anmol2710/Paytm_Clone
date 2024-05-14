@@ -7,7 +7,6 @@ export async function POST(req:Request) {
     const body = await req.json();
     const {id,filter} = body;
     
-    console.log(filter)
     const users = await User.find({
         _id: { $ne: id },
         name: {

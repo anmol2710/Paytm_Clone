@@ -9,7 +9,6 @@ export async function POST(req:Request){
     const account = await Account.findOne({
         user:token
     })
-    console.log(account)
     try {
         if(!account){
             return Response.json({"message":"Inavlid account" , status:false})
