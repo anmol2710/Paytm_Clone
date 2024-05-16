@@ -3,10 +3,29 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from "next/navigation";
 import axios from 'axios';
 
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
+
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Search } from "lucide-react"
+import { Button } from './ui/button';
+
 interface UserType {
     name: string;
     password: string;
-    username: string;
+    email: string;
     __v: number;
     _id: string;
 }
@@ -31,38 +50,58 @@ const UserSearch: React.FC<propsType> = ({ token }) => {
     }, [Filter])
 
     return (
-        <div>
-            <div className="font-bold mt-6 text-lg">
-                Users
-            </div>
-            <div className="my-2">
-                <input onChange={(e) => {
-                    setFilter(e.target.value)
-                }} type="text" placeholder="Search users..." className="w-full px-2 py-1 border rounded border-slate-200"></input>
-            </div>
-            <div>
-                {users && users.map(user => (<div key={user._id}>
-                    <div className="flex justify-between">
-                        <div className="flex">
-                            <div className="rounded-full h-12 w-12 bg-[#042e6f] text-white text-xl flex justify-center mt-1 mr-2">
-                                <div className="flex flex-col justify-center h-full text-xl">
-                                    {user.name.charAt(0).toUpperCase()}
-                                </div>
-                            </div>
-                            <div className="flex flex-col justify-center h-ful">
-                                <div className=' text-lg'>
-                                    {user.name}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="flex flex-col justify-center h-ful">
-                            <button className='bg-[#042e6f] text-white rounded-lg px-10 py-2' onClick={() => { router.push("/send?id=" + user._id + "&name=" + user.name) }}>Send</button>
-                        </div>
+        <Card
+            className="xl:col-span-2" x-chunk="dashboard-01-chunk-4"
+        >
+            <CardHeader className="flex flex-row items-center justify-between">
+                <div className="grid gap-2">
+                    <CardTitle>Users</CardTitle>
+                </div>
+                <form className="flex sm:flex-initial">
+                    <div className="relative">
+                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input
+                            type="search"
+                            placeholder="Search Users..."
+                            onChange={e => { setFilter(e.target.value) }}
+                            className="pl-8 w-[200px] md:w-[400px] lg:w-[300px]"
+                        />
                     </div>
-                </div>))}
-            </div>
-        </div>
+                </form>
+            </CardHeader>
+            <CardContent>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Users</TableHead>
+                            <TableHead className="text-right"></TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {users?.map(user => (
+                            <TableRow key={user._id}>
+                                <TableCell>
+                                    <div className=' flex items-center'>
+                                        <div className="rounded-full h-10 w-10 bg-black text-white  flex justify-center mt-1 mr-2">
+                                            <div className="flex flex-col justify-center h-full text-lg font-semibold">
+                                                {user.name.charAt(0).toUpperCase()}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div className="font-medium"> {user.name}</div>
+                                            <div className="hidden text-sm text-muted-foreground md:inline">
+                                                {user.email}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </TableCell>
+                                <TableCell className="text-right"><Button onClick={() => { router.push("/send?id=" + user._id + "&name=" + user.name) }}> Send </Button></TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </CardContent>
+        </Card>
     )
 }
 

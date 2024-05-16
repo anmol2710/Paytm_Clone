@@ -1,11 +1,14 @@
-import React from 'react'
+import { cn } from '@/lib/utils';
+import { Loader2 } from 'lucide-react';
 
-const Loading = () => {
+const Loader = ({ className }: { className?: string }) => {
     return (
-        <div className=' h-screen w-screen flex items-center justify-center bg-[#00baf2]'>
-            <p className=' text-2xl'>Loading...</p>
+        <div className=' h-screen w-screen flex items-center justify-center'>
+            <Loader2
+                className={cn('my-28 h-16 w-16 text-primary/60 animate-spin', className)}
+            />
         </div>
-    )
-}
+    );
+};
 
-export default Loading
+export default Loader;
