@@ -89,7 +89,7 @@ const UserSearch: React.FC<propsType> = ({ token }) => {
                                         </div>
                                         <div>
                                             <div className="font-medium"> {user.name}</div>
-                                            <div className="hidden text-sm text-muted-foreground md:inline">
+                                            <div className="text-sm text-muted-foreground">
                                                 {user.email}
                                             </div>
                                         </div>

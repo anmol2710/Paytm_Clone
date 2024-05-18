@@ -51,7 +51,7 @@ export default function Dashboard() {
     }
 
     if (data?.user && 'id' in data?.user) {
-      const { name, email, id } = data?.user
+      const { id } = data?.user
       setid(String(id))
     }
 
@@ -151,9 +151,8 @@ export default function Dashboard() {
           </Card>
         </div>
         <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-
-          <UserSearch token={id || ""} />
-          <Transactions token={id || ""} />
+          {id && <UserSearch token={id} />}
+          {id && <Transactions token={id} />}
 
         </div>
       </main>

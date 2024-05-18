@@ -17,6 +17,8 @@ export default function Signup() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [cpassword, setCPassword] = useState("");
+    const [loadingCredentials, setLoadingCredentials] = useState(false);
+    const [loadingGoogle, setLoadingGoogle] = useState(false);
     const router = useRouter();
 
     async function handleSignup(e: any) {
@@ -44,6 +46,12 @@ export default function Signup() {
         console.log(response)
         router.push("/")
     }
+    async function handleGoogleSignin() {
+        setLoadingGoogle(true);
+
+        signIn("google", { callbackUrl: "/" });
+    }
+
 
     return (
         <>
@@ -100,10 +108,10 @@ export default function Signup() {
                                     required />
                             </div>
                             <Button type="submit" className="w-full" onClick={handleSignup}>
-                                Create an account
+                                {loadingCredentials ? "Creating an account..." : "Create an Account"}
                             </Button>
-                            <Button variant="outline" className="w-full">
-                                Signup with Google
+                            <Button variant="outline" className="w-full" onClick={handleGoogleSignin}>
+                                {loadingGoogle ? "Loading..." : "Sign up with Google"}
                             </Button>
                         </div>
                         <div className="mt-4 text-center text-sm">

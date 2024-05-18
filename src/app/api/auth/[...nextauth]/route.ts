@@ -3,6 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import dbConnect from "@/lib/dbConnect";
 import User from "@/model/userModel";
 import Account from "@/model/accountModel";
+import GoogleProvider from "next-auth/providers/google";
 
 const handler = NextAuth({
   providers: [
@@ -49,10 +50,38 @@ const handler = NextAuth({
           }
         }
       },
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || ""
     })
   ],
   secret: "secret",
   callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      await dbConnect();
+      if (account && account.provider === 'google') {
+        let existingUser = await User.findOne({ googleId: user.id });
+        if (!existingUser) {
+          const newUser = await User.create({
+            name: user.name,
+            email: user.email,
+            googleId: user.id,
+          });
+
+          await Account.create({
+            user: newUser._id,
+            balance: 10000,
+            name: user.name,
+          });
+
+          user.id = newUser._id;
+        } else {
+          user.id = existingUser._id;
+        }
+      }
+      return true;
+    },
     jwt: async ({ user, token }: any) => {
       if (user) {
         token.uid = user.id;
@@ -68,6 +97,9 @@ const handler = NextAuth({
         session.user.name = token.name
       }
       return session
+    },
+    redirect: async ({ url, baseUrl }) => {
+      return baseUrl;
     }
   },
   pages:{

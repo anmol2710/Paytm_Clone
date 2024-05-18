@@ -10,9 +10,11 @@ const userScema = new mongoose.Schema({
         required:true
     },
     password:{
-        type:String,
-        required:true
+        type:String
     },
+    googleId:{
+        type:Number
+    }
 })
 
 const User = mongoose.models.users || mongoose.model("users" , userScema);

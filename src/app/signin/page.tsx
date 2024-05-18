@@ -16,6 +16,8 @@ export default function Signin() {
     const router = useRouter()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loadingCredentials, setLoadingCredentials] = useState(false);
+    const [loadingGoogle, setLoadingGoogle] = useState(false);
 
     async function handleSignin(e: any) {
         e.preventDefault();
@@ -25,13 +27,25 @@ export default function Signin() {
             return
         }
 
+        setLoadingCredentials(true)
         const response = await signIn("credentials", {
             email: email,
             password: password,
             redirect: false
         })
+        if (response?.error) {
+            setLoadingCredentials(false)
+            toast.error("Inavlid inputs")
+        }
+        else {
+            router.push("/")
+        }
         console.log(response)
-        router.push("/")
+    }
+    async function handleGoogleSignin() {
+        setLoadingGoogle(true);
+
+        signIn("google", { callbackUrl: "/" });
     }
 
     return (
@@ -67,11 +81,11 @@ export default function Signin() {
                                     placeholder="********"
                                     onChange={e => { setPassword(e.target.value) }} />
                             </div>
-                            <Button type="submit" className="w-full" onClick={handleSignin}>
-                                Sign in
+                            <Button type="submit" className="w-full" onClick={handleSignin} disabled={loadingCredentials}>
+                                {loadingCredentials ? "Signing in..." : "Sign in"}
                             </Button>
-                            <Button variant="outline" className="w-full">
-                                Sign in with Google
+                            <Button variant="outline" className="w-full" onClick={handleGoogleSignin} disabled={loadingGoogle}>
+                                {loadingGoogle ? "Loading..." : "Sign in with Google"}
                             </Button>
                         </div>
                         <div className="mt-4 text-center text-sm">
