@@ -1,4 +1,6 @@
+"use client"
 import React, { useState, useEffect } from 'react'
+import Loading from "@/components/Loading"
 
 import {
     Card,
@@ -23,6 +25,7 @@ interface TransactionType {
 const Transactions: React.FC<PropsType> = ({ token }) => {
 
     const [transactiondata, setTransactionData] = useState<TransactionType[]>([]);
+    const [isLoding , setIsLoading] = useState(true)
 
     useEffect(() => {
         fetchTransaction()
@@ -32,6 +35,11 @@ const Transactions: React.FC<PropsType> = ({ token }) => {
         const response = await axios.post("api/account/transactions", JSON.stringify({ token }))
         const reversed = [...response.data.message].reverse();
         setTransactionData(reversed)
+        setIsLoading(false)
+    }
+
+    if(isLoding){
+        return <Loading />
     }
 
     return (

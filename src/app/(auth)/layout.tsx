@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google"
-import "./globals.css";
+import "../globals.css";
 import { Providers } from "@/lib/providers";
 
 import { cn } from "@/lib/utils"
@@ -28,7 +28,7 @@ export default function RootLayout({
         fontSans.variable
       )}>
         <Providers>
-          <div className=" w-screen h-screen flex flex-col-reverse md:flex-row justify-between">
+          <div className=" flex min-h-screen w-full flex-col">
             {children}
           </div>
         </Providers>

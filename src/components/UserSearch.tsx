@@ -78,7 +78,7 @@ const UserSearch: React.FC<propsType> = ({ token }) => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {users?.map(user => (
+                        { users?.map(user => (
                             <TableRow key={user._id}>
                                 <TableCell>
                                     <div className=' flex items-center'>
